@@ -1,73 +1,47 @@
 #!/usr/bin/python3
-
-
 import sys
-import random
-import time
+
+"""
+File_name: rsa
+Created: 28th of May, 2023
+Auth: David James Taiye (Official0mega)
+Size: undefined
+Project: RSA-Factoring-Challenge
+Status: submitted.
+"""
 
 
-def is_prime(num, k=20):
-    '''
-    '''
-    if num == 2 or num == 3:
-        return True
-    if num < 2 or num % 2 == 0:
-        return False
+def factorization():
 
-
-    d = num - 1
-    r = 0
-    while d % 2 == 0:
-        d //= 2
-        r += 1
-
-
-    for _ in range(k):
-        a = random.randint(2, num - 2)
-        x = pow(a, d, num)
-        if x == 1 or x == num - 1:
-            continue
-        for _ in range(r - 1):
-            x = pow(x, 2, num)
-            if x == num - 1:
-                break
-        else:
-            return False
-
-
-    return True
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: rsa <file>")
-        exit()
-
-
-    input_file = sys.argv[1]
-
-
+    """
+    # RSA Laboratories states that: for each RSA number n
+    # ...there exist prime numbers p and q such that
+    # n = p × q. The problem is to find these two primes, given only n.
+    # VARIABLE(" "):
+    # factorize(int) Factorize all the things!
+    # This task is the same as task 0, except:
+    # .....p and q are always prime numbers
+    # .....There is only one number in the files
+    # .....How far can you go in less than 5 second? 🤔🤔🤔
+    """
     try:
-        with open(input_file, 'r') as f:
-            lines = f.readlines()
-    except FileNotFoundError:
-        print("File not found")
-        exit()
+        files = sys.argv[1]
+        with open(files) as f:
+            for numbs in f:
+                numbs = int(numbs)
+                if numbs % 2 == 0:
+                    print("{}={}*{}".format(numbs, numbs // 2, 2))
+                    continue
+                run = 3
+                while run < numbs // 2:
+                    if numbs % run == 0:
+                        print("{}={}*{}".format(numbs, numbs // run, run))
+                        break
+                    run = run + 2
+                if run == (numbs // 2) + 1:
+                    print("{}={}*{}".format(numbs, numbs, 1))
+    except (IndexError):
+        pass
 
 
-    start_time = time.time()
-
-
-    num = int(lines[0].strip())
-
-
-    for i in range(2, num//2):
-        if num % i == 0 and is_prime(i) and is_prime(num//i):
-            print(f"{num}={i}*{num//i}")
-            break
-
-
-        if time.time() - start_time > 5:
-            print("Time limit exceeded")
-            exit()
-
+factorization()
